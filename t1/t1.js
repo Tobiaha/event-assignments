@@ -29,35 +29,56 @@ const todoList = [
 ];
 
 // add your code here
-const ul = document.getElementById('todoUI'); // ul target elementti
+const ul = document.getElementById('todoUI');
 const addButton = document.getElementById('addButton');
-const form = document.getElementById('todoForm');
 const dialog = document.getElementById('todoDialog');
+const form = document.getElementById('todoForm');
 const input = document.getElementById('taskInput');
 
-function todoModal() {
+function listUI() {
   ul.innerHTML = '';
+
   todoList.forEach(item => {
     const li = document.createElement('li');
-
-    checkbox.addEventListener('change', () => {
-      item.completed = checkbox.checked; // true false
-      console.log(`${item.task} -> ${item.comp}`);
-    });
-
-    const label = document.createElement('label');
-    label.setAttribute('for', `todo-${item.id}`);
-    label.textContent = item.task;
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = `todo-${item.id}`;
     checkbox.checked = item.completed;
 
-    label.prepend(checkbox);
+    checkbox.addEventListener('change', () => {
+      item.completed = checkbox.checked; // true or falses
+      console.log(`${item.task} -> ${item.completed}`); //  debug
+    });
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `todo-${item.id}`);
+    label.textContent = item.task;
+
+    li.appendChild(checkbox);
     li.appendChild(label);
+
+    ul.appendChild(li);
   });
 }
-todoModal();
 
-//Modal not working
+addButton.addEventListener('click', () => {
+  dialog.showModal();
+});
+
+form.addEventListener('submit', evt => {
+  evt.preventDefault();
+  const taskText = input.value.trim();
+  if (taskText) {
+    todoList.push({
+      id: todoList.length + 1,
+      task: taskText,
+      completed: false,
+    });
+    input.value = '';
+    dialog.close();
+    listUI();
+  }
+});
+
+listUI();
