@@ -30,6 +30,7 @@ const todoList = [
 
 // add your code here
 const ul = document.getElementById('todoUI');
+const deleteButton = document.getElementById('deleteButton');
 const addButton = document.getElementById('addButton');
 const dialog = document.getElementById('todoDialog');
 const form = document.getElementById('todoForm');
@@ -47,13 +48,17 @@ function listUI() {
     checkbox.checked = item.completed;
 
     checkbox.addEventListener('change', () => {
-      item.completed = checkbox.checked; // true or falses
-      console.log(`${item.task} -> ${item.completed}`); //  debug
+      item.completed = checkbox.checked; // true or false
+      console.log(todoList);
     });
 
     const label = document.createElement('label');
     label.setAttribute('for', `todo-${item.id}`);
     label.textContent = item.task;
+
+    deleteButton.addEventListener('click'), ( => {
+      const index = todoList.findIndex(todo => todo.id === todo.id);)
+    })
 
     li.appendChild(checkbox);
     li.appendChild(label);
@@ -61,6 +66,20 @@ function listUI() {
     ul.appendChild(li);
   });
 }
+deleteButton.addEventListener('click', () => {
+  dialog.showModal();
+
+  form.addEventListener('submit', evt => {
+    evt.preventDefault();
+    let taskText = input.value.trim();
+    if (taskText) {
+      todoList()
+    }
+
+  }
+
+
+});
 
 addButton.addEventListener('click', () => {
   dialog.showModal();
@@ -68,7 +87,7 @@ addButton.addEventListener('click', () => {
 
 form.addEventListener('submit', evt => {
   evt.preventDefault();
-  const taskText = input.value.trim();
+  let taskText = input.value.trim();
   if (taskText) {
     todoList.push({
       id: todoList.length + 1,
@@ -78,6 +97,7 @@ form.addEventListener('submit', evt => {
     input.value = '';
     dialog.close();
     listUI();
+    console.log(todoList);
   }
 });
 
