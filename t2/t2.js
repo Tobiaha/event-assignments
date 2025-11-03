@@ -776,18 +776,13 @@ const restaurants = [
 
 const modal = document.querySelector('#modal');
 const modalContent = document.querySelector('#modal-content');
-const closeButtons = document.querySelector('.close-button');
-
-function highlight(evt) {
-  document.querySelector('.highlight')?.classList.remove('highlight');
-  evt.currentTarget.classList.add('highlight');
-}
+const closeButtons = document.querySelectorAll('.close-button');
+const target = document.querySelector('#target');
 
 function openModal(restaurant) {
   modal.showModal();
-  modalContent.innerHTML = '';
-  const html = `
-  <h3>Nimi</h3>
+  modalContent.innerHTML = `
+  <h3>${restaurant.name}</h3>
   <address>
     ${restaurant.address} <br>
     ${restaurant.postalCode} <br>
@@ -795,29 +790,29 @@ function openModal(restaurant) {
     ${restaurant.phone} <br>
     ${restaurant.company}
   </address>`;
-  modal.insertAdjacentHTML('afterbegin', html);
+}
+
+function highlight(evt, restaurant) {
+  document.querySelector('.highlight')?.classList.remove('highlight');
+  evt.currentTarget.classList.add('highlight');
+
+  openModal(restaurant);
 }
 
 restaurants.sort(function (a, b) {
   if (a.name.toUpperCase() > b.name.toUpperCase()) {
     return 1;
-  } else {
+  } else if (a.name.toUpperCase() < b.name.toUpperCase()) {
     return -1;
+  } else {
+    return 0;
   }
 });
 
-// Sulje modaalin, kun käyttäjä klikkaa sulje-nappia
-for (const closeButton of closeButtons) {
-  closeButton.addEventListener('click', function () {
-    console.log(evt);
-  });
-}
-
 for (const restaurant of restaurants) {
   const rivi = document.createElement('tr');
-  rivi.addEventListener('click', hightlight);
-  rivi.addEventListener('click', openModal);
-  openModal(restaurant);
+  // Aukaisee modaalin ja korostaa rivin klikkauksesta
+  rivi.addEventListener('click', evt => highlight(evt, restaurant));
 
   const nimiSolu = document.createElement('td');
   nimiSolu.innerText = restaurant.name;
@@ -826,5 +821,14 @@ for (const restaurant of restaurants) {
   osoiteSolu.innerText = `${restaurant.address} ${restaurant.city}`;
 
   rivi.append(nimiSolu, osoiteSolu);
-  document.querySelector('#target').appendChild(rivi);
+
+  target.appendChild(rivi);
+}
+
+// Sulje modaalin, kun käyttäjä klikkaa sulje-nappia
+for (const closeButton of closeButtons) {
+  closeButton.addEventListener('click', function (evt) {
+    console.log(evt.target);
+    modal.close();
+  });
 }
