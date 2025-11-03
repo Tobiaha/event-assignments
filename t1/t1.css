@@ -23,7 +23,7 @@ label {
 }
 
 li button {
-  width: 2rem;
+  width: 3rem;
   height: 3rem;
   background-color: rgb(255, 0, 0);
   color: #fff;
@@ -55,7 +55,7 @@ li input[type='checkbox']:checked + label {
 .delete-btn {
   margin: 1rem;
   padding: 0.5rem 1.5rem;
-  background-color: rgb(193, 67, 17);
+  background-color: rgb(129, 43, 9);
   color: #fff;
   border: none;
   cursor: pointer;
